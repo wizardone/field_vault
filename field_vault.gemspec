@@ -9,9 +9,9 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Stefan Slaveykov"]
   spec.email         = ["wizard.oneandonly@gmail.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because RubyGems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = %q{Encrypt your fields}
+  spec.description   = %q{Encrypt and decrypt your fields in your database. Works with ActiveRecord and Sequel}
+  spec.homepage      = "https://github.com/wizardone/field_vault"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'

@@ -21,9 +21,22 @@ Or install it yourself as:
     $ gem install field_vault
 
 ## Usage
+In the most simple form field_vault will encrypt your fields in base64
+encoding
+```ruby
+class UserDetails < ApplicationRecord
+  include FieldVault
+  field_vault :passport_number, :drivers_license
+end
+```
+Once stored in the database the fields are encrypted
+```ruby
+  user_details.passport_number = '123321'
+  user_details.save!
 
-TODO: Write usage instructions here
-
+  user_details.passport_number
+  => ''
+```
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.

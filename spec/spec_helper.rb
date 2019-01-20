@@ -1,4 +1,5 @@
 require "bundler/setup"
+require 'byebug'
 require "field_vault"
 
 RSpec.configure do |config|

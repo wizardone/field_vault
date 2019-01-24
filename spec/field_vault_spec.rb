@@ -23,6 +23,7 @@ RSpec.describe FieldVault do
     test_record = subject.new
     test_record.field_vault(:passport_number)
 
-    expect(test_record.encrypted_attributes).to eq [:passport_number]
+    expect(test_record.encrypted_attributes.size).to eq(1)
+    expect(test_record.encrypted_attributes.first).to be_a(FieldVault::EncryptedField)
   end
 end

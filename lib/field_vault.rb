@@ -1,10 +1,9 @@
 require "field_vault/version"
+require 'field_vault/encrypted_field'
 
 module FieldVault
 
   def self.included(base)
-    #TODO: Do we keep this on the instance level or the class level?
-    #base.extend ClassMethods
     base.attr_reader :encrypted_attributes
   end
 
@@ -20,8 +19,7 @@ module FieldVault
 
   def field_vault(*attributes)
     attributes.each do |name|
-      #encrypted_attributes << EncryptedField.new(name: name)
-      encrypted_attributes << name
+      encrypted_attributes << EncryptedField.new(name: name)
     end
   end
 end

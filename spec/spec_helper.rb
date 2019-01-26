@@ -1,6 +1,6 @@
-require "bundler/setup"
-require 'byebug'
-require "field_vault"
+require 'bundler/setup'
+require 'field_vault'
+require_relative 'database'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

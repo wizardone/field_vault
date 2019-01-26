@@ -2,10 +2,6 @@ TestRecord = Class.new do
   include FieldVault
 end
 
-#class TestRecord
-#  include FieldVault
-#end
-
 RSpec.describe FieldVault do
   subject { TestRecord }
 

@@ -8,15 +8,18 @@ RSpec.describe FieldVault do
   end
 
   it 'adds the encrypted attributes array' do
-    #test_record = subject.new
-    #expect(test_record.encrypted_attributes).to eq []
-    expect(subject.encrypted_attributes).to eq []
+    expect(subject.encrypted_attributes).to eq({})
   end
 
   it 'adds field to the encrypted attributes array' do
     subject.field_vault(:passport_number)
 
     expect(subject.encrypted_attributes.size).to eq(1)
-    expect(subject.encrypted_attributes.first).to be_a(FieldVault::EncryptedField)
+    expect(subject.encrypted_attributes).to include(:passport_number)
+  end
+
+  it 'encrypts the attributes before save' do
+    subject.field_vault(:passport_number)
+    subject.new.save
   end
 end

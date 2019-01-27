@@ -5,28 +5,29 @@ require 'field_vault/encrypted_field'
 module FieldVault
 
   def self.included(base)
-    base.extend ClassMethods
     base.instance_eval do
-      #attr_accessor :encrypted_attributes
-    end
-  end
+      attr_accessor :encrypted_attributes
+      before_save :encrypt_attributes!
 
-  module ClassMethods
-    attr_accessor :encrypted_attributes
-    def field_vault(*attributes)
-      attributes.each do |name|
-        encrypted_attributes << EncryptedField.new(name: name)
-      end
-    end
-
-    def encrypted_attributes
-      @encrypted_attributes ||= []
+      extend ClassMethods
     end
   end
 
   def encrypt_attributes!
-    @encrypted_attributes.each do |attr|
-      puts "#{attr.name} is about to be encrypted"
+    self.class.encrypted_attributes.each do |attr|
+      puts " is about to be encrypted"
+    end
+  end
+
+  module ClassMethods
+    def field_vault(*attributes)
+      attributes.each do |name|
+        encrypted_attributes[name.to_sym] = EncryptedField.new(name: name)
+      end
+    end
+
+    def encrypted_attributes
+      @encrypted_attributes ||= {}
     end
   end
 end

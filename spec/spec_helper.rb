@@ -1,6 +1,6 @@
 require 'bundler/setup'
 require 'field_vault'
-require_relative 'active_record/database'
+require_relative 'active_record/database_helper'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

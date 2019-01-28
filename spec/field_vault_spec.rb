@@ -20,6 +20,9 @@ RSpec.describe FieldVault do
 
   it 'encrypts the attributes before save' do
     subject.field_vault(:passport_number)
-    subject.new.save
+    user = subject.new(passport_number: '555333666')
+    user.save
+
+    expect(user.passport_number).to eq('TEST_ENCRYPTION555333666')
   end
 end

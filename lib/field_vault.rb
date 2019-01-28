@@ -6,7 +6,6 @@ module FieldVault
 
   def self.included(base)
     base.instance_eval do
-      attr_accessor :encrypted_attributes
       before_save :encrypt_attributes!
 
       extend ClassMethods
@@ -14,8 +13,9 @@ module FieldVault
   end
 
   def encrypt_attributes!
-    self.class.encrypted_attributes.each do |attr|
-      puts " is about to be encrypted"
+    self.class.encrypted_attributes.each_pair do |key, _value|
+      val = public_send(key)
+      public_send("#{key}=", "TEST_ENCRYPTION#{val}")
     end
   end
 

@@ -1,5 +1,6 @@
 require 'byebug'
-require "field_vault/version"
+require 'base64'
+require 'field_vault/version'
 require 'field_vault/encrypted_field'
 
 module FieldVault
@@ -13,9 +14,9 @@ module FieldVault
   end
 
   def encrypt_attributes!
-    self.class.encrypted_attributes.each_pair do |key, _value|
+    self.class.encrypted_attributes.each_pair do |key, encrypted_field|
       val = public_send(key)
-      public_send("#{key}=", "TEST_ENCRYPTION#{val}")
+      public_send("#{key}=", encrypted_field.encoder.encode64(val))
     end
   end
 

@@ -23,6 +23,6 @@ RSpec.describe FieldVault do
     user = subject.new(passport_number: '555333666')
     user.save
 
-    expect(user.passport_number).to eq('TEST_ENCRYPTION555333666')
+    expect(user.passport_number).to eq(Base64.encode64('555333666'))
   end
 end

@@ -16,7 +16,7 @@ module FieldVault
   def encrypt_attributes!
     self.class.encrypted_attributes.each_pair do |key, encrypted_field|
       val = public_send(key)
-      public_send("#{key}=", encrypted_field.encoder.encode64(val))
+      public_send("#{key}=", encrypted_field.encrypt(val))
     end
   end
 

@@ -2,7 +2,7 @@ module FieldVault
   class EncryptedField
     attr_reader :name, :encoder
 
-    def initialize(name:, encoder: Base64)
+    def initialize(name:, encoder:)
       @name = name
       @encoder = encoder
     end

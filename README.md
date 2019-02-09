@@ -26,7 +26,7 @@ encoding
 ```ruby
 class UserDetails < ApplicationRecord
   include FieldVault
-  field_vault :passport_number, :drivers_license
+  field_vault :passport_number, :drivers_license, encoder: Base64
 end
 ```
 Once stored in the database the fields are encrypted

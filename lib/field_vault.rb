@@ -21,9 +21,9 @@ module FieldVault
   end
 
   module ClassMethods
-    def field_vault(*attributes)
+    def field_vault(*attributes, encoder: nil)
       attributes.each do |name|
-        encrypted_attributes[name.to_sym] = EncryptedField.new(name: name)
+        encrypted_attributes[name.to_sym] = EncryptedField.new(name: name, encoder: encoder || Base64)
       end
     end
 

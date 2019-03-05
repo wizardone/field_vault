@@ -8,16 +8,26 @@ module FieldVault
     end
 
     def encrypt(value)
-      encoder.public_send(encrypt_method, value)
+      encoder.public_send(encode_method, value)
     end
 
     private
 
-    def encrypt_method
+    def encode_method
       if encoder == Base64
         :encode64
       else
-        :unknown
+        #TODO: Give the ability to provide a custom encoding class that responds
+        #to an encode method
+        :encode
+      end
+    end
+
+    def decode_method
+      if encoder == Base64
+        :decode64
+      else
+        :decode
       end
     end
   end

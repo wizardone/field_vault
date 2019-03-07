@@ -21,14 +21,26 @@ module FieldVault
   end
 
   module ClassMethods
-    def field_vault(*attributes, encoder: nil)
+    def field_vault(*attributes, encoder: nil, methods: nil)
+      if methods && methods.keys != [:encode, :decode]
+        raise ArgumentError.new('Methods must be a hash including :encode and :decode keys')
+      end
       attributes.each do |name|
-        encrypted_attributes[name.to_sym] = EncryptedField.new(name: name, encoder: encoder || Base64)
+        encrypted_attributes[name.to_sym] = EncryptedField.new(name: name, encoder: encoder || Base64, methods: methods || default_methods)
       end
     end
 
     def encrypted_attributes
       @encrypted_attributes ||= {}
+    end
+
+    private
+
+    def default_methods
+      {
+        encode: :encode,
+        decode: :decode
+      }
     end
   end
 end

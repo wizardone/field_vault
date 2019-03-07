@@ -1,10 +1,11 @@
 module FieldVault
   class EncryptedField
-    attr_reader :name, :encoder
+    attr_reader :name, :encoder, :methods
 
-    def initialize(name:, encoder:)
+    def initialize(name:, encoder:, methods:)
       @name = name
       @encoder = encoder
+      @methods = methods
     end
 
     def encrypt(value)
@@ -19,7 +20,7 @@ module FieldVault
       else
         #TODO: Give the ability to provide a custom encoding class that responds
         #to an encode method
-        :encode
+        methods[:encode]
       end
     end
 
@@ -27,7 +28,7 @@ module FieldVault
       if encoder == Base64
         :decode64
       else
-        :decode
+        methods[:decode]
       end
     end
   end

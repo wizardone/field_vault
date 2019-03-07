@@ -11,6 +11,12 @@ RSpec.describe FieldVault do
     expect(subject.encrypted_attributes).to eq({})
   end
 
+  it 'raises an error if methods are not supplied properly' do
+    expect do
+      subject.field_vault(:passport_number, methods: {some_method: :dodgy})
+    end.to raise_error(ArgumentError)
+  end
+
   it 'adds field to the encrypted attributes array' do
     subject.field_vault(:passport_number)
 

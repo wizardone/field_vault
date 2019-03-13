@@ -24,11 +24,19 @@ RSpec.describe FieldVault do
     expect(subject.encrypted_attributes).to include(:passport_number)
   end
 
-  it 'encrypts the attributes before save' do
+  it 'encodes the attributes before save' do
     subject.field_vault(:passport_number)
     user = subject.new(passport_number: '555333666')
     user.save
 
     expect(user.passport_number).to eq(Base64.encode64('555333666'))
+  end
+
+  it 'decodes the attributes for reading' do
+    subject.field_vault(:passport_number)
+    user = subject.new(passport_number: '555333666')
+    user.save
+
+    expect(user.decoded_passport_number).to eq('555333666')
   end
 end

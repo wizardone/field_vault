@@ -16,17 +16,18 @@ module FieldVault
   def encrypt_attributes!
     self.class.encrypted_attributes.each_pair do |key, encrypted_field|
       val = public_send(key)
-      public_send("#{key}=", encrypted_field.encrypt(val))
+      public_send("#{key}=", encrypted_field.encode(val))
     end
   end
 
   module ClassMethods
-    def field_vault(*attributes, encoder: nil, methods: nil)
+    def field_vault(*attributes, encoder: Base64, methods: default_methods)
       if methods && methods.keys != [:encode, :decode]
         raise ArgumentError.new('Methods must be a hash including :encode and :decode keys')
       end
       attributes.each do |name|
-        encrypted_attributes[name.to_sym] = EncryptedField.new(name: name, encoder: encoder || Base64, methods: methods || default_methods)
+        encrypted_attributes[name.to_sym] = EncryptedField.new(name: name, encoder: encoder, methods: methods)
+        define_decode_method(name)
       end
     end
 
@@ -35,6 +36,13 @@ module FieldVault
     end
 
     private
+
+    def define_decode_method(name)
+      define_method("decoded_#{name}") do
+        val = public_send(name)
+        self.class.encrypted_attributes[name].decode(val)
+      end
+    end
 
     def default_methods
       {

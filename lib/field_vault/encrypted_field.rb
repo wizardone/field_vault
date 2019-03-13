@@ -8,8 +8,12 @@ module FieldVault
       @methods = methods
     end
 
-    def encrypt(value)
+    def encode(value)
       encoder.public_send(encode_method, value)
+    end
+
+    def decode(value)
+      encoder.public_send(decode_method, value)
     end
 
     private
@@ -18,8 +22,6 @@ module FieldVault
       if encoder == Base64
         :encode64
       else
-        #TODO: Give the ability to provide a custom encoding class that responds
-        #to an encode method
         methods[:encode]
       end
     end

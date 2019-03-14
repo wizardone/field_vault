@@ -1,5 +1,6 @@
 require_relative 'active_record/user'
-require 'byebug'
+require_relative 'support/custom_encoder'
+
 RSpec.describe FieldVault do
   subject { User }
 
@@ -24,19 +25,41 @@ RSpec.describe FieldVault do
     expect(subject.encrypted_attributes).to include(:passport_number)
   end
 
-  it 'encodes the attributes before save' do
-    subject.field_vault(:passport_number)
-    user = subject.new(passport_number: '555333666')
-    user.save
+  context 'Base64 encoding' do
+    it 'encodes the attributes before save' do
+      subject.field_vault(:passport_number)
+      user = subject.new(passport_number: '555333666')
+      user.save
 
-    expect(user.passport_number).to eq(Base64.encode64('555333666'))
+      expect(user.passport_number).to eq(Base64.encode64('555333666'))
+    end
+
+    it 'decodes the attributes for reading' do
+      subject.field_vault(:passport_number)
+      user = subject.new(passport_number: '555333666')
+      user.save
+
+      expect(user.decoded_passport_number).to eq('555333666')
+    end
   end
 
-  it 'decodes the attributes for reading' do
-    subject.field_vault(:passport_number)
-    user = subject.new(passport_number: '555333666')
-    user.save
+  context 'custom encoding' do
+    it 'encodes the attributes before save' do
+      subject.field_vault(:passport_number, encoder: CustomEncoder.new)
+      user = subject.new(passport_number: '555333666')
+      user.save
 
-    expect(user.decoded_passport_number).to eq('555333666')
+      expect(user.passport_number).to eq(CustomEncoder.new.encode('555333666'))
+    end
+
+    it 'decodes the attributes for reading' do
+      subject.field_vault(:passport_number, encoder: CustomEncoder.new)
+      user = subject.new(passport_number: '555333666')
+      user.save
+
+      # TODO: Kinda stupid, right?
+      expect(user.passport_number).to eq('Custom encoded 555333666')
+      expect(user.decoded_passport_number).to eq('Decoded custom Custom encoded 555333666')
+    end
   end
 end

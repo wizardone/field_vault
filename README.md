@@ -26,7 +26,7 @@ encoding
 ```ruby
 class UserDetails < ApplicationRecord
   include FieldVault
-  field_vault :passport_number, :drivers_license, encoder: Base64
+  field_vault :passport_number, :drivers_license
 end
 ```
 Once stored in the database the fields are encrypted
@@ -35,7 +35,32 @@ Once stored in the database the fields are encrypted
   user_details.save!
 
   user_details.passport_number
-  => ''
+  => 'some_base_64_encoded_string'
+```
+
+FieldVault automatically defines methods to fetch the decoded values for whatever you have encoded.
+Those methods are prefixed with `decoded_`
+```ruby
+  user_details.decoded_passport_number
+  => '123321'
+```
+
+Think you need something custom? Write your own class to take care of this. All that `FieldVault` expects
+is a class that responds to `encode` and `decode` methods:
+
+```ruby
+class MyCustomEncoder
+  def encode
+  end
+
+  def decode
+  end
+end
+
+class UserDetails < ApplicationRecord
+  include FieldVault
+  field_vault :passport_number, :drivers_license, encoder: MyCustomEncoder.new
+end
 ```
 ## Development
 

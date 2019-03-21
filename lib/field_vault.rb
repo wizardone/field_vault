@@ -2,12 +2,13 @@ require 'byebug'
 require 'base64'
 require 'field_vault/version'
 require 'field_vault/encrypted_field'
+require 'field_vault/adapter'
 
 module FieldVault
 
   def self.included(base)
     base.instance_eval do
-      before_save :encrypt_attributes!
+      Adapter.save_logic.call(base)
 
       extend ClassMethods
     end

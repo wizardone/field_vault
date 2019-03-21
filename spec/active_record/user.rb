@@ -2,8 +2,6 @@ require 'byebug'
 class User < ActiveRecord::Base
   include FieldVault
 
-  before_save :encrypt_attributes!
-
   #field_vault :passport_number
  # def self.field_vault(*attributes)
  #   attributes.each do |name|

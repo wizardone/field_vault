@@ -3,9 +3,9 @@ module FieldVault
     class << self
       def save_logic
         if defined?(ActiveRecord)
-          Proc.new { |base| base.before_save :encrypt_attributes!  }
+          Proc.new { |base| base.before_save :encrypt_attributes! }
         elsif defined?(Sequel)
-          Proc.new {  }
+          Proc.new { |base| base.before_save :encrypt_attributes! }
         end
       end
     end
